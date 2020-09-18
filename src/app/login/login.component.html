@@ -1,0 +1,56 @@
+<div class="container-fliud" class="bg-login" style="height: 100vh">
+    <div class="d-flex align-items-center justify-content-center h-100">
+
+        <div class="col-md-4 mx-auto">
+            <div class="card card-login">
+                <div class="card-body">
+                    <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
+                        <div class="row justify-content-center">
+                            <img src="../../assets/tag-logo.png" width="100" alt="" srcset="">
+                        </div>
+                        <h2 class="text-center"><b>Chat-App</b></h2>
+                        <!-- <p class="lead">Ingresar</p> -->
+
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Correo</mat-label>
+                            <input matInput type="email" name="correo" required correo [(ngModel)]="usuario.correo" pattern="[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+" placeholder="Correo">
+                            <mat-error *ngIf="loginForm.submitted && loginForm.controls['correo'].errors">
+                                Ingrese un correo válido.
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Contraseña</mat-label>
+                            <input matInput type="password" name="password" required minlength="6" [(ngModel)]="usuario.password" placeholder="Contraseña">
+                            <mat-error *ngIf="loginForm.submitted && loginForm.controls['password'].errors">
+                                Ingrese una contraseña
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-checkbox color="primary" [(ngModel)]="usuario.recuerdame" name="recuerdame">Recordarme</mat-checkbox>
+
+                        <button class="w-100 btn-custom btn-block text-white" mat-flat-button color="primary" type="submit">
+                          <b>Ingresar</b>
+                        </button>
+
+                        <br>
+                        <div class="row justify-content-center pt-2">
+                            <h3 class="text-muted">¿No tienes una cuenta?</h3>
+                        </div>
+                        <div class="row justify-content-center">
+                            <a routerLink="/register">
+                                <h1 class="text-primary font-weight-bold">Crea una ahora!</h1>
+
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#3669EB" type="square-jelly-box" [fullScreen]="true">
+    <p style="color: #3669EB"> Loading... </p>
+</ngx-spinner>
