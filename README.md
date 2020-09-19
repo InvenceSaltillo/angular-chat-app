@@ -1,6 +1,7 @@
 # ChatApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.12.
+- WebApp en Angular que integra el socket-server del curso de Flutter avanzado de Fernando Herrera
+- API Rest en NodeJs con express y MongoDB como base de datos.
 
 ## Development server
 
