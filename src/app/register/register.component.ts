@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,7 @@ export class RegisterComponent implements OnInit {
     password: '',
   };
 
-  constructor(private authService: AuthService, private spinner: NgxSpinnerService) { }
+  constructor(private authService: AuthService, private spinner: NgxSpinnerService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -26,20 +27,20 @@ export class RegisterComponent implements OnInit {
 
     console.log(registerForm.value);
 
-    // if (loginForm.invalid) { return; }
-    // this.spinner.show();
+    if (registerForm.invalid) { return; }
+    this.spinner.show();
 
-    // const correo = loginForm.controls.correo.value;
-    // const password = loginForm.controls.password.value;
-    // const recordar = loginForm.controls.recuerdame.value;
+    const nombre = registerForm.controls.nombre.value;
+    const correo = registerForm.controls.correo.value;
+    const password = registerForm.controls.password.value;
 
-    // this.authService.login(correo, password, recordar).subscribe(() => {
+    this.authService.register(nombre, correo, password).subscribe(() => {
 
-    //   this.spinner.hide();
-    // }, () => {
-    //   this.spinner.hide();
-    //   this.authService.mostrarSwal('', 'Email y/o contraseña incorrecta', 'error', 'Entendido');
-    // });
+      this.router.navigate(['home']).then( () => this.spinner.hide() );
+    }, (e: any) => {
+      this.spinner.hide();
+      this.authService.mostrarSwal('', e.error.msg, 'error', 'Entendido');
+    });
 
   }
 }

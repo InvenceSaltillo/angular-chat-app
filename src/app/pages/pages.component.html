@@ -1,0 +1,79 @@
+<div *ngIf="authService.usuario" class="example-container">
+
+    <mat-toolbar color="primary" class="example-toolbar">
+
+        <mat-toolbar-row>
+            <b>Chat-App</b>
+            <span class="example-spacer"></span>
+            <button (click)="cerrarSesion()" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+              <mat-icon>exit_to_app</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+
+    <mat-sidenav-container class="mat-sidenav example-sidenav-container">
+        <mat-sidenav #sidenav class="sidenav" mode="side" opened="true">
+
+            <aside>
+                <header>
+                    <input type="text" placeholder="search">
+                </header>
+                <ul>
+                    <li *ngFor="let usuario of usuarioService.usuarios" (click)="usuarioPara(usuario)">
+                        <img src="../../assets/usuario.png" alt="">
+                        <div>
+                            <h2>{{usuario.nombre}}</h2>
+                            <h3>
+                                <span class="status" [ngClass]="{'green': usuario.online, 'orange': !usuario.online}"></span> {{ usuario.online ? 'online' : 'offline'}}
+                            </h3>
+                        </div>
+                    </li>
+                </ul>
+            </aside>
+            <!--  <mat-nav-list>
+                <mat-list-item>
+                </mat-list-item>
+
+                <mat-form-field appearance="outline" class="w-100 ">
+                    <mat-icon matSuffix class="search-icon">search</mat-icon>
+                    <input matInput placeholder="Buscar">
+                </mat-form-field>
+
+                <mat-list-item *ngFor="let usuario of usuarioService.usuarios" (click)="usuarioPara(usuario)" [routerLink]="'/home/' + usuario.uid" routerLinkActive="active">
+
+                    <div class="sidebar-profile ">
+                        <div class="user-pic">
+                            <img class="img-responsive img-rounded" alt="User picture" src="../../assets/usuario.png">
+                        </div>
+                        <div class="user-info ">
+                            <span class="user-name ">{{ usuario.nombre }}
+                              </span>
+                            <span class="user-status ">
+                                <i class="fa fa-circle " [ngStyle]="{'color':usuario.online ? 'green' : 'red' }"></i>
+                                <span class=" ">{{ usuario.email }}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+                </mat-list-item>
+
+                <mat-list-item>
+                </mat-list-item>
+
+            </mat-nav-list>-->
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
+
+
+
+</div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8) " size="medium " color="#fff " type="square-jelly-box " [fullScreen]="true ">
+    <p style="color: white "> Espere un momento... </p>
+</ngx-spinner>

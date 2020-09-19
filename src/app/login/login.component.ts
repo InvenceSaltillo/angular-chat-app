@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 
 import { NgxSpinnerService } from 'ngx-spinner';
+import {  Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,11 +19,15 @@ export class LoginComponent implements OnInit {
     recuerdame: false
   };
 
-  constructor( private authService: AuthService, private spinner: NgxSpinnerService) { }
+  constructor( private authService: AuthService, private spinner: NgxSpinnerService, private router: Router) { }
 
   ngOnInit(): void {
     this.usuario.correo = localStorage.getItem( 'correo' ) || '';
     if ( this.usuario.correo.length > 1 ) { this.usuario.recuerdame = true; }
+
+    this.authService.isLoggedIn().subscribe(() => {
+      this.router.navigate(['home']);
+    }, () => this.router.navigate(['login']) );
   }
 
   onSubmit(loginForm: NgForm){
@@ -36,10 +41,10 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(correo, password, recordar).subscribe(() => {
 
-      this.spinner.hide();
+      this.router.navigate(['home']).then( () => this.spinner.hide() );
     }, () => {
       this.spinner.hide();
-      this.authService.mostrarSwal('', 'Email y/o contraseña incorrecta', 'error', 'Entendido');
+      this.authService.mostrarSwal('Login incorrecto', 'Revise sus credenciales nuevamente', 'error', 'Entendido');
     });
 
   }
