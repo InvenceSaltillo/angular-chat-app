@@ -24,7 +24,6 @@ export class UsuariosService {
 
     return this.http.get<UsuarioClass[]>(`${this.apiUrl}usuarios`, {headers})
     .pipe( map( (resp: any ) => {
-      console.log(resp);
       this.usuarios = resp.usuarios;
       return this.usuarios;
 

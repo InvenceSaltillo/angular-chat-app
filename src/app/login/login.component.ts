@@ -4,6 +4,7 @@ import { AuthService } from '../services/auth.service';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import {  Router } from '@angular/router';
+import { SocketService } from '../services/socket.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
     recuerdame: false
   };
 
-  constructor( private authService: AuthService, private spinner: NgxSpinnerService, private router: Router) { }
+  constructor( private authService: AuthService, private spinner: NgxSpinnerService, private router: Router,
+               private socketService: SocketService) { }
 
   ngOnInit(): void {
     this.usuario.correo = localStorage.getItem( 'correo' ) || '';
@@ -32,6 +34,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(loginForm: NgForm){
 
+
     if (loginForm.invalid) { return; }
     this.spinner.show();
 
@@ -39,13 +42,21 @@ export class LoginComponent implements OnInit {
     const password = loginForm.controls.password.value;
     const recordar = loginForm.controls.recuerdame.value;
 
-    this.authService.login(correo, password, recordar).subscribe(() => {
+
+    this.authService.login(correo, password, recordar).subscribe(( resp: any) => {
+
+      this.socketService.connect( resp.token );
+      this.socketService.socket.emit('usuario-conectado', resp.usuario);
 
       this.router.navigate(['home']).then( () => this.spinner.hide() );
+
     }, () => {
       this.spinner.hide();
       this.authService.mostrarSwal('Login incorrecto', 'Revise sus credenciales nuevamente', 'error', 'Entendido');
     });
+
+
+
 
   }
 

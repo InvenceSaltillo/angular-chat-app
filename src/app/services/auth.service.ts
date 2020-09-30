@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { Usuario, UsuarioClass } from '../models/usuario.model';
+import { UsuarioClass } from '../models/usuario.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
 
 
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
   usuario: UsuarioClass;
   apiUrl = environment.apiUrl;
 
-  constructor( private http: HttpClient) { }
+  constructor( private http: HttpClient, private router: Router) { }
 
 
   login(email: string, password: string, recordar = false ): Observable<boolean> {
@@ -34,7 +35,7 @@ export class AuthService {
     .pipe( map( (resp: any ) => {
       this.usuario = resp.usuario;
       this.guardarToken(resp.token);
-      return true;
+      return resp;
 
     }), catchError( e => {
       return throwError(e);
@@ -67,24 +68,21 @@ export class AuthService {
 
     return this.http.get<boolean>(`${this.apiUrl}login/renew`, {headers})
     .pipe( map( (resp: any ) => {
-      console.log(resp);
       this.usuario = resp.usuario;
       this.guardarToken(resp.token);
       return true;
 
     }), catchError( e => {
+      this.logOut();
       return throwError(e);
     }));
   }
 
-  async guardarToken(token: string){
-    await localStorage.setItem('token', token);
+  guardarToken(token: string){
+    localStorage.setItem('token', token);
     return;
   }
 
-  logOut(){
-    localStorage.removeItem('token');
-  }
 
 
   mostrarSwal( title: string, html: string, icon: SweetAlertIcon, confirmButtonText: string ) {
@@ -99,5 +97,11 @@ export class AuthService {
         return result.value;
       }
     });
+  }
+
+
+  logOut(){
+    localStorage.removeItem('token');
+    this.router.navigate(['login']);
   }
 }

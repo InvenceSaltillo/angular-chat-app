@@ -11,5 +11,6 @@ export interface UsuarioClass {
   nombre: string;
   email: string;
   uid: string;
+  fcmToken: string;
 }
 

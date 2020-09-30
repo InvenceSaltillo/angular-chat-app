@@ -1,64 +1,54 @@
-<!-- <div class="chat-view"> -->
-<!-- <div class="row">
-        <h1>{{chatService.usuarioPara.nombre}}</h1>
+<div *ngIf="!chatService.usuarioPara; else chatTemplate" id="container">
+    <h1 class="text-center text-danger">No hay ningun chat activo</h1>
+</div>
+<ng-template #chatTemplate>
 
-    </div> -->
+    <div id="container">
+        <main>
+            <header>
+                <img src="../../assets/usuario.png" alt="">
+                <div>
+                    <h2>Chat with {{chatService.usuarioPara.nombre }}</h2>
+                    <h3>already {{chatService.mensajes.length}} messages</h3>
 
-<div id="container">
-    <main *ngIf="chatService.usuarioPara">
-        <header>
-            <img src="../../assets/usuario.png" alt="">
-            <div>
-                <h2>Chat with {{chatService.usuarioPara.nombre }}</h2>
-                <h3>already {{chatService.mensajes.length}} messages</h3>
-
-            </div>
-        </header>
-        <ul id="chat">
-            <li class="" *ngFor="let mensaje of chatService.mensajes " [ngClass]="{'you': mensaje.de !== usuarioId, 'me': mensaje.de === usuarioId}">
-                <div class="entete" *ngIf=" mensaje.de !== usuarioId ">
-                    <span class="status green"></span>
-                    <h2>{{ chatService.usuarioPara.nombre }}</h2>
-                    <h3 class="pl-1">-- {{ mensaje.createdAt | date: 'medium'}}</h3>
                 </div>
+            </header>
+            <ul id="chat" #scrollframe>
+                <li class="" *ngFor="let mensaje of chatService.mensajes" #item [ngClass]="{'you': mensaje.de !== usuarioId, 'me': mensaje.de === usuarioId}">
+                    <div class="entete" *ngIf=" mensaje.de !== usuarioId ">
+                        <span class="status green"></span>
+                        <h2>{{ chatService.usuarioPara.nombre }}</h2>
+                        <h3 class="pl-1">-- {{ mensaje.createdAt | date: 'medium'}}</h3>
+                    </div>
 
-                <div class="entete" *ngIf=" mensaje.de === usuarioId ">
-                    <h3 class="pr-1"> {{ mensaje.createdAt | date: 'medium'}} --</h3>
-                    <h2>{{ authService.usuario.nombre }}</h2>
-                    <span class="status blue"></span>
-                </div>
-                <div class="triangle"></div>
-                <div class="message">
-                    {{mensaje.mensaje}}
-                </div>
-            </li>
-            <!-- <li class="me">
-                <div class="entete">
-                    <h3>10:12AM, Today</h3>
-                    <h2>Vincent</h2>
-                    <span class="status blue"></span>
-                </div>
-                <div class="triangle"></div>
-                <div class="message">
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
-                </div>
-            </li> -->
-        </ul>
-        <div class="row align-items-baseline">
+                    <div class="entete" *ngIf=" mensaje.de === usuarioId ">
+                        <h3 class="pr-1"> {{ mensaje.createdAt | date: 'medium'}} --</h3>
+                        <h2>{{ authService.usuario.nombre }}</h2>
+                        <span class="status blue"></span>
+                    </div>
+                    <div class="triangle"></div>
+                    <div class="message">
+                        {{mensaje.mensaje}}
+                    </div>
+                </li>
+            </ul>
 
-            <footer>
+            <div class="row align-items-center">
 
-                <textarea #message (keydown)="triggerFunction($event)" [(ngModel)]="messageToSend" placeholder="Type your message" autofocus></textarea>
-            </footer>
-            <button (click)="send()" [disabled]="messageToSend.length === 0 || messageToSend.charAt(0) === ' '" mat-fab color="accent" aria-label="Example icon button with a delete icon">
+                <footer>
+
+                    <textarea #message (keydown)="triggerFunction($event)" [(ngModel)]="messageToSend" placeholder="Type your message" autofocus></textarea>
+                </footer>
+                <button (click)="send()" [disabled]="messageToSend.length === 0 || messageToSend.charAt(0) === ' '" mat-fab color="accent" aria-label="Example icon button with a delete icon">
               <mat-icon>send</mat-icon>
             </button>
-        </div>
-    </main>
+            </div>
+        </main>
 
-</div>
+    </div>
 
 
+</ng-template>
 
 <!-- <div class="container">
         <h3 class=" text-center">{{chatService.usuarioPara.nombre}}</h3>

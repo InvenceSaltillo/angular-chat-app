@@ -29,9 +29,7 @@ export class ChatService {
 
     return this.http.get<MensajeElement[]>(`${this.apiUrl}mensajes/${usuarioId}`, {headers})
     .pipe( map( (resp: any ) => {
-      console.log(resp.mensajes);
-      this.mensajes = resp.mensajes;
-      this.mensajes = this.mensajes.reverse();
+      this.mensajes = resp.mensajes.reverse();
       return resp;
 
     }), catchError( e => {

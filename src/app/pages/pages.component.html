@@ -3,8 +3,12 @@
     <mat-toolbar color="primary" class="example-toolbar">
 
         <mat-toolbar-row>
+            <button class="mr-3" mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
             <b>Chat-App</b>
             <span class="example-spacer"></span>
+            <h3>{{authService.usuario.nombre}}</h3>
             <button (click)="cerrarSesion()" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
               <mat-icon>exit_to_app</mat-icon>
             </button>
@@ -17,10 +21,13 @@
 
             <aside>
                 <header>
-                    <input type="text" placeholder="search">
+                    <input type="text" (keyup)="applyFilter($event.target.value)" placeholder="Search...">
                 </header>
                 <ul>
-                    <li *ngFor="let usuario of usuarioService.usuarios" (click)="usuarioPara(usuario)">
+                    <li *ngIf="usuarios.length === 0">
+                        <h2 class="text-center text-muted">No hay contactos para mostrar</h2>
+                    </li>
+                    <li *ngFor="let usuario of usuarios" (click)="usuarioPara(usuario)">
                         <img src="../../assets/usuario.png" alt="">
                         <div>
                             <h2>{{usuario.nombre}}</h2>
@@ -30,39 +37,16 @@
                         </div>
                     </li>
                 </ul>
+                <footer>
+                    <h3 class="ml-1">
+                        Estado del servidor -
+                        <span [ngClass]="{'text-success': socketService.serverConnected, 'text-danger': !socketService.serverConnected}">
+                        {{socketService.serverConnected ? 'Online' : 'Offline'}}
+                      </span>
+                    </h3>
+                </footer>
             </aside>
-            <!--  <mat-nav-list>
-                <mat-list-item>
-                </mat-list-item>
 
-                <mat-form-field appearance="outline" class="w-100 ">
-                    <mat-icon matSuffix class="search-icon">search</mat-icon>
-                    <input matInput placeholder="Buscar">
-                </mat-form-field>
-
-                <mat-list-item *ngFor="let usuario of usuarioService.usuarios" (click)="usuarioPara(usuario)" [routerLink]="'/home/' + usuario.uid" routerLinkActive="active">
-
-                    <div class="sidebar-profile ">
-                        <div class="user-pic">
-                            <img class="img-responsive img-rounded" alt="User picture" src="../../assets/usuario.png">
-                        </div>
-                        <div class="user-info ">
-                            <span class="user-name ">{{ usuario.nombre }}
-                              </span>
-                            <span class="user-status ">
-                                <i class="fa fa-circle " [ngStyle]="{'color':usuario.online ? 'green' : 'red' }"></i>
-                                <span class=" ">{{ usuario.email }}</span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <mat-divider></mat-divider>
-                </mat-list-item>
-
-                <mat-list-item>
-                </mat-list-item>
-
-            </mat-nav-list>-->
         </mat-sidenav>
 
         <mat-sidenav-content>

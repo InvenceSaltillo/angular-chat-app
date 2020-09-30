@@ -7,8 +7,8 @@ export interface Mensaje {
 
 export interface MensajeElement {
   de: string;
-  para: string;
+  para?: string;
   mensaje: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
